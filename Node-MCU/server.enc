@@ -1,0 +1,30 @@
+#include <ESP8266WiFi.h>
+#include<ESP8266WebServer.h>
+
+ESP8266WebServer server;
+
+const char* ssid = "Krishna";
+const char* password = "dhruvkrishna";
+
+void setup(){
+  Serial.begin(115200);
+  Serial.println();
+  Serial.printf("Connecting to %s ", ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println(" connected");
+  Serial.print("IP Address: ");
+  Serial.print(WiFi.localIP());
+  Serial.println("");
+  server.on("/",[](){server.send(200,"text/plain","Hello World!");});
+  server.begin();
+}
+
+
+void loop(){
+  server.handleClient();
+}
